@@ -152,6 +152,19 @@ query.set("d", "value1", "value2", "value3");
 query.add("tags", "javascript");
 query.add("tags", "javascript"); // Won't add duplicate
 
+// Add multiple values at once
+query.addAll({
+  category: "programming",
+  tags: ["javascript", "nodejs", "react"],
+  status: "active"
+});
+
+// Or using array format
+query.addAll([
+  ["author", "john"],
+  ["tags", ["frontend", "backend"]]
+]);
+
 // Add if not exists
 query.addIfNotExist("config", "only-once");
 
@@ -160,6 +173,37 @@ query.merge("x=10&y=20");
 
 // Serialize back to string
 console.log(query.toUrlString()); // 'a=1&b=2&b=3&c=new-value&d=value1&d=value2&d=value3&x=10&y=20'
+
+#### Batch Operations with addAll
+
+The `addAll` method allows you to add multiple key-value pairs efficiently:
+
+```javascript
+const query = new PureQuery();
+
+// Using object format
+query.addAll({
+  search: "javascript",
+  page: "1",
+  tags: ["react", "vue", "angular"]
+});
+
+// Using array format (tuples)
+query.addAll([
+  ["category", "frontend"],
+  ["difficulty", ["beginner", "intermediate"]]
+]);
+
+// Works with existing data
+query.set("existing", "value");
+query.addAll({ existing: "new-value", newKey: "new-data" });
+// Result: existing has both values, newKey is added
+
+// Method chaining support
+query.addAll({ param1: "value1" })
+     .addAll([["param2", "value2"]])
+     .add("param3", "value3");
+```
 ```
 
 ### Chaining Methods
@@ -263,6 +307,7 @@ console.log(url.toString()); // '' (empty string)
 - `get(key: string, index?: number)` - Get value by key
 - `getAll(key: string)` - Get all values for key
 - `add(key: string, value: string)` - Add value to key
+- `addAll(entries: object | array)` - Add multiple key-value pairs at once
 - `addIfNotExist(key: string, value: string)` - Add only if key doesn't exist
 - `set(key: string, ...values: string[])` - Set values for key
 - `remove(key: string)` - Remove key
