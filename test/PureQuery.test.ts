@@ -218,4 +218,115 @@ describe('UrlQuery', () => {
         expect(qstring).toContain('a=400');
         expect(qstring).toContain('b=400%');
     });
+
+    describe('addAll', () => {
+        test('when addAll with object then add all key-value pairs', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll({
+                a: 100,
+                b: 200,
+                c: 300
+            });
+
+            expect(testPureQuery.get('a')).toBe(100);
+            expect(testPureQuery.get('b')).toBe(200);
+            expect(testPureQuery.get('c')).toBe(300);
+        });
+
+        test('when addAll with object containing arrays then add all values for each key', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll({
+                a: [100, 200],
+                b: 300,
+                c: [400, 500, 600]
+            });
+
+            expect(testPureQuery.getAll('a')).toEqual([100, 200]);
+            expect(testPureQuery.get('b')).toBe(300);
+            expect(testPureQuery.getAll('c')).toEqual([400, 500, 600]);
+        });
+
+        test('when addAll with array of tuples then add all key-value pairs', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll([
+                ['a', 100],
+                ['b', 200],
+                ['c', 300]
+            ]);
+
+            expect(testPureQuery.get('a')).toBe(100);
+            expect(testPureQuery.get('b')).toBe(200);
+            expect(testPureQuery.get('c')).toBe(300);
+        });
+
+        test('when addAll with array of tuples containing arrays then add all values for each key', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll([
+                ['a', [100, 200]],
+                ['b', 300],
+                ['c', [400, 500]]
+            ]);
+
+            expect(testPureQuery.getAll('a')).toEqual([100, 200]);
+            expect(testPureQuery.get('b')).toBe(300);
+            expect(testPureQuery.getAll('c')).toEqual([400, 500]);
+        });
+
+        test('when addAll to existing keys then append values correctly', () => {
+            const testPureQuery = createTestPureQuery();
+            testPureQuery.set('a', 100);
+            testPureQuery.set('b', 200);
+            
+            testPureQuery.addAll({
+                a: 300,
+                c: 400
+            });
+
+            expect(testPureQuery.getAll('a')).toEqual([100, 300]);
+            expect(testPureQuery.get('b')).toBe(200);
+            expect(testPureQuery.get('c')).toBe(400);
+        });
+
+        test('when addAll with duplicate values then ignore duplicates', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll({
+                a: [100, 200, 100],
+                b: 200
+            });
+
+            expect(testPureQuery.getAll('a')).toEqual([100, 200]);
+            expect(testPureQuery.get('b')).toBe(200);
+        });
+
+        test('when addAll with empty object then do nothing', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll({});
+
+            expect(testPureQuery.isEmpty()).toBe(true);
+        });
+
+        test('when addAll with empty array then do nothing', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            testPureQuery.addAll([]);
+
+            expect(testPureQuery.isEmpty()).toBe(true);
+        });
+
+        test('when addAll returns instance then allow method chaining', () => {
+            const testPureQuery = createTestPureQuery();
+            
+            const result = testPureQuery.addAll({a: 100}).add('b', 200);
+
+            expect(result).toBe(testPureQuery);
+            expect(testPureQuery.get('a')).toBe(100);
+            expect(testPureQuery.get('b')).toBe(200);
+        });
+    });
 });

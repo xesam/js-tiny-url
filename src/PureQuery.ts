@@ -47,6 +47,27 @@ export default class PureQuery {
         return this;
     }
 
+    addAll(entries: Record<KeyType, ValueType | ValueType[]> | [KeyType, ValueType | ValueType[]][]) {
+        if (Array.isArray(entries)) {
+            entries.forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    value.forEach(v => this.add(key, v));
+                } else {
+                    this.add(key, value);
+                }
+            });
+        } else {
+            Object.entries(entries).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    value.forEach(v => this.add(key, v));
+                } else {
+                    this.add(key, value);
+                }
+            });
+        }
+        return this;
+    }
+
     addIfNotExist(key: KeyType, value: ValueType) {
         if (this.has(key)) {
             return this;
