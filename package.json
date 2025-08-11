@@ -1,5 +1,5 @@
 {
-  "name": "js-pure-url",
+  "name": "@js-tiny/url",
   "version": "0.0.1",
   "description": "A simple url-style-string builder with pure javascript",
   "keywords": [
