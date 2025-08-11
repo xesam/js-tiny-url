@@ -1,10 +1,10 @@
 import url from '@xesam/url';
-import PureQuery from './PureQuery';
+import {PureQuery} from './PureQuery';
 import {type KeyType, type ValueType} from './types'
 
 type AttrHandle = (value: string) => string | null;
 
-export default class PureUrl {
+export class PureUrl {
     private readonly _components: { [key: string]: string };
     readonly query: PureQuery;
 

@@ -1,6 +1,6 @@
 import {type KeyType, type ValueType} from './types'
 
-export default class PureQuery {
+export class PureQuery {
     private _pairs: { [key: KeyType]: ValueType[] };
 
     constructor(qString?: string, decodeValue = false) {
