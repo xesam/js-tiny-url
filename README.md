@@ -5,7 +5,7 @@ A simple url-style-string builder with pure javascript
 ## Installation
 
 ```shell script
-npm install js-pure-url
+npm install @js-tiny/url
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install js-pure-url
 ### Basic Usage
 
 ```javascript
-import { PureUrl, PureQuery } from "js-pure-url";
+import { PureUrl, PureQuery } from "@js-tiny/url";
 
 // Create a new URL
 const url = new PureUrl("https://example.com/path?query=value#hash");
